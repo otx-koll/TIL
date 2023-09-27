@@ -27,7 +27,7 @@ $  ls
 ```bash
 $ ssh-keygen -t ed25519 -C "your_email@example.com"
 ```
--C 옵션의 your_email\@example.com은 자신의 이메일로 변경한다. 만약 ed25519 방식으로 동작하지 않는다면 아래와 같이 RSA로 옵션을 변경하여 SSH 키를 생성한다.
+-C 옵션의 your_email&#64;example.com은 자신의 이메일로 변경한다. 만약 ed25519 방식으로 동작하지 않는다면 아래와 같이 RSA로 옵션을 변경하여 SSH 키를 생성한다.
 
 ```bash
 $ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
