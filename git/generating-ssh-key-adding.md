@@ -88,13 +88,13 @@ $ cat id_ed25519.pub
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOg6cFpnLH0iNyBQDGc9OfbxDPovBM9gdlFbT8f0gZP5 your_email@example.com
 ```
 
-텍스트가 깨지지 않도록 [명령어를 통해 복사하기](../Terminal/clipboard%20copy&paste.md)를 추천한다.
+텍스트가 깨지지 않도록 [명령어를 통해 복사하기](../Terminal/clipboard-copy&paste.md)를 추천한다.
 
 ## 공개키를 GitHub 계정에 등록하기
 
 GitHub에 로그인 후 오른쪽 상단의 프로필을 클릭하고 Settings 메뉴로 이동한다. SSH and GPG keys 메뉴를 선택한다. 
 
-![SSH 키 등록 폼](./img/add%20new%20ssh%20key.png)
+![SSH 키 등록 폼](./img/add-ssh-key.png)
 
 Title 필드에는 등록하려는 키의 이름을 입력한다.
 
