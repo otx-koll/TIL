@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "5a731e8d1211f107",
+        "id": "37bbccfdb7afaf67",
         "type": "tabs",
         "children": [
           {
-            "id": "05dc146bc31155a1",
+            "id": "3ba9e55bd13d8871",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Terminal/clipboard-copy&paste.md",
+                "file": "git/undo.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Terminal/clipboard-copy&paste.md",
+                "file": "git/undo.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Terminal/clipboard-copy&paste.md",
+                "file": "git/undo.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Terminal/clipboard-copy&paste.md"
+                "file": "git/undo.md"
               }
             }
           }
@@ -146,8 +146,15 @@
       "command-palette:명령어 팔레트 열기": false
     }
   },
-  "active": "05dc146bc31155a1",
+  "active": "3ba9e55bd13d8871",
   "lastOpenFiles": [
+    "Algorithm/LeetCode/1.Two-Sum.md",
+    "git/undo.md",
+    "git/generating-ssh-key-adding.md",
+    "ETC/ASCII-Code.md",
+    "Algorithm/LeetCode/무제 파일.md",
+    "Algorithm/LeetCode",
+    "Terminal/clipboard-copy&paste.md",
     "README.md"
   ]
 }
