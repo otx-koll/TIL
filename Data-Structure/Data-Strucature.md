@@ -30,7 +30,7 @@
 
 - [연결 리스트(Linked List)](/Data-Structure/Linked-List.md)
 
-- 스택(Stack)
+- [스택(Stack)](/Data-Structure/Stack.md)
 
 - 큐(Queue)
 
