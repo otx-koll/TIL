@@ -123,7 +123,7 @@ Pattern 플래그 상수|기호|설명
 -|-|-
 **Pattern.CANON_EQ**|None|표준화된 매칭 모드를 활성화합니다.이 모드가 켜지면 a를 나타내는 유니코드 "\u00E5"와 a와 상단고리 유니코드를 쓴 "a\u030A"를 같다고 매칭합니다.
 **Pattern.CASE_INSENSITIVE**|(?i)|대소문자를 구분하지 않습니다.
-**Pattern.COMMENTS**|(?x)|공백과 주석이 무시됩니다. 주석은 #부터 그 행 끝까지 입니다.
+**Pattern.COMMENTS**|(?x)|공백과 주석이 무시됩니다. 주석은 \#부터 그 행 끝까지 입니다.
 **Pattern.MULTILINE**|(?m)|다중행 모드를 사용여 모든 ^와 $가 인식됩니다. 기본값은 입력값 전체를 하나의 시작과 끝으로 인식합니다.
 **Pattern.DOTALL**|(?s)|.가 개행문자 까지 포함하는 모든 문자로 매칭됩니다.
 **Pattern.LITERAL**|None|입력의 메타문자와 이스케이프된 문자를 일반 문자로 취급합니다. CASE_INSENSITIVE와 UNICODE_CASE는 기능이 유지됩니다.
