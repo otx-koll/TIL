@@ -41,7 +41,7 @@
 
 자료들 간의 앞뒤 관계가 1:n 또는 n:n이다. 
 
-- 트리(Tree)
+- [트리(Tree)](/Data-Structure/Tree.md)
 
 - 그래프(Graph)
 
