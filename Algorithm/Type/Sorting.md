@@ -9,3 +9,8 @@
 5. 힙정렬(Heap Sort)
 6. 퀵정렬(Quick Sort)
 7. 기수정렬(Radix Sort) 
+
+## 선택정렬(Selection Sort)
+
+- 정렬되지 않은 요소들중에 가장 작은 데이터를 찾아 맨 앞에 위치한 값과 교환하는 방식
+
