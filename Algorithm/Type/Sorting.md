@@ -28,6 +28,7 @@
 
 ## 힙정렬(Heap Sort)
 
+- d
 
 ## 퀵정렬(Quick Sort)
 
