@@ -26,7 +26,7 @@
 
 자료들 간의 앞뒤 관계가 1:1이다.
 
-- 배열(Array)
+- [배열(Array)](/Data-Structure/Array.md)
 
 - [연결 리스트(Linked List)](/Data-Structure/Linked-List.md)
 
