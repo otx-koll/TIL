@@ -17,3 +17,5 @@
 - O(2n): Fibonacci Sequence
 
 # 공간 복잡도(Space Complexity)
+
+- 프로그램 실행과 완료에 얼마나 많은 공간(메모리)가 필요한지를 나타낸다.
