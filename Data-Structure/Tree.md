@@ -1,2 +1,7 @@
 # 트리(Tree)
-트리는 노드로 이루어진 자료 구조이다. 
+
+- 노드로 이루어진 계층적 구조
+
+## Reference
+
+https://en.wikipedia.org/wiki/Tree_(data_structure)
