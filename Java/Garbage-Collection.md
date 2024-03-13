@@ -27,14 +27,41 @@
 - Reachable : 객체가 참조되고 있는 상태
 - Unreachable : 객체가 참조되고 있지 않은 상태 (GC의 대상이 됨)
 
+![garbage_collection](./img/garbage_collection.png)
+
+## 전제 조건 (Weak Generational Hypothesis)
+
+- 대부분의 객체는 금방 불가능한 상태(Unreachable)가 된다.
+- 오래된 객체에서 새로운 객체로의 참조는 아주 적게 존재한다.
+
+객체는 대부분 일회성이며 메모리에 오랫동안 남아있는 경우는 드물다. 
+
+그렇기 때문에 객체의 생존 기간에 따라 물리적인 Heap 영역을 Young, Old 2가지 영역으로 설계되었다.
+
+![gc_generation](./img/gc_generation.png)
+
+- **Young Generation**
+  - 새롭게 생성된 객체가 할당되는 영역
+  - 대부분의 객체가 금방 Unreachable 상태가 되기 때문에 많은 객체가 Young 영역에 생성되었다가 사라진다.
+  - Young 영역에 대한 가비지 컬렉션을 Minor GC라고 부른다.
+- **Old Generation**
+  - Young 영역에서 Reachable 상태를 유지해서 살아남은 객체가 복사되는 영역
+  - Young 영역보다 크게 할당되고, 영역 크기가 큰 만큼 가비지는 적게 발생한다.
+    - 수명이 짧은 Young 영역의 객체들은 큰 공간이 필요없다.
+  - Old 영역에 대한 가비지 컬렉션을 Major GC 혹은 Full GC라고 부른다.
+
 ## 방식
 
-### Mark and sweep
+Young 영역과 Old 영역은 서로 다른 메모리 구조로 되어 있기 때문에 세부 동작은 다르지만, 아래 2가지 공통적인 단계를 따른다.
 
-- Mark : 먼저 Root Space로부터 그래프 순회를 통해 연결된 객체들을 찾아내어 각각 어떤 객체를 참조하고 있는지 찾아서 마킹한다.
-- Sweep : 참조하고 있지 않은 객체 즉 Unreachable 객체들을 Heap에서 제거한다.
-- Compact : Sweep 후에 분산된 객체들을 Heap의 시작 주소로 모아 메모리가 할당된 부분과 그렇지 않은 부분으로 압축한다. (가비지 컬렉터 종류에 따라 하지 않는 경우도 있음)
+### Stop The World
 
-### Reference
+- JVM이 애플리케이션의 실행을 멈추는 작업
+- GC를 실행하는 쓰레드를 제외한 모든 쓰레드들의 작업이 중단되고, GC가 완료되면 작업이 재개된다.
+- 일반적으로 GC의 성능 개선은 stop the world의 시간을 줄이는 작업이라고 보면 된다.
 
-https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)
+### Mark and Sweep
+
+- Mark : 사용되는 메모리와 사용되지 않는 메모리를 식별하는 작업
+  - 스택의 모든 변수, Reachable 객체를 스캔하면서 각각이 어떤 객체를 참고하고 있는지 탐색한다.
+- Sweep : Mark 단계에서 사용되지 않음으로 식별된 메모리를 해제하는 작업
