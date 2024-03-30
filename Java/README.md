@@ -81,3 +81,15 @@ sudo apt-get purge openjdk*
 
 - 비트(bit) : 0 또는 1로 표현할 수 있는 최소 단위
 - 바이트(byte) : 8비트가 모이면 1바이트
+
+### 변수
+
+### 자료형
+
+- 정수 자료형
+  - byte
+  - short
+  - int
+  - long
+- 문자 자료형
+  - 
