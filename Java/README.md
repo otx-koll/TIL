@@ -292,9 +292,73 @@ private|같은 클래스 내부에서만 접근 가능
 
 ### static
 
-- 정적 변수
-- 프로그램이 실행되어 메모리에 올라갔을 때 딱 한 번 메모리 공간이 할당되고, 그 값을 모든 인스턴스가 공유한다.
-- 클래스 변수라고도 한다.
+- **static**은 프로그램이 실행되어 메모리에 올라갔을 때 딱 한 번 메모리 공간이 할당되고, 그 값을 모든 인스턴스가 공유한다.
+- **static** 변수는 `정적 변수`, `클래스 변수`라고도 한다.
+- **static** 메서드는 `클래스 메서드`라고도 한다. 
+  - 클래스 메서드 내부에서 지역 변수와 클래스 변수는 사용할 수 있지만, 인스턴스 변수는 사용할 수 없다. 반대로 일반 메서드에서는 클래스 변수를 사용할 수 있다.
+  - 왜냐하면 일반 메서드는 인스턴스가 생성될 때 호출되는 메서드이고, 클래스 변수는 이미 만들어진 변수이기 때문이다.
+
+<details>
+<summary><b>싱글톤 패턴으로 응용</b></summary>
+<div markdown="1">
+
+- `싱글톤 패턴(singleton patter)`은 인스턴스를 단 하나만 생성하는 디자인 패턴이다.
+
+**1. 생성자를 private으로 만들기**
+```java
+public class Company {
+  private Company(){}
+}
+```
+
+
+
+**2. 클래스 내부에 static으로 유일한 인스턴스 생성하기**
+```java
+public class Company {
+  private static Company instance = new Company(); // 유일하게 생성한 인스턴스
+  private Company(){}
+}
+```
+
+**3. 외부에서 참조할 수 있는 public 메서드 만들기**
+```java
+public class Company {
+  ...
+  // 인스턴스를 외부에서 참조할 수 있도록 public get() 메서드 구현
+  public static Company getInstance() {
+    if(instance == null) {
+      instance = new Company();
+    }
+    return instance; // 유일하게 생성한 인스턴스 반환
+  }
+}
+```
+
+**4. 실제 사용 코드 만들기**
+```java
+public class CompanyTest {
+  pubic static void main(String[] args) {
+    // 클래스 이름으로 getInstance() 호출하여 참조 변수에 대입
+    Company myCompany1 = Company.getInstance();
+    Company myCompany1 = Company.getInstance(); 
+    System.out.println(myCompany1 == myCompany2); // 두 변수가 같은 주소인지 확인
+  }
+}
+```
+
+</details>
+</div>
+
+<br>
+
+> **디자인 패턴**이란?
+> 
+> 프로그램 특성에 따른 설계 유형을 이론화 한 내용이며, 객체 지향으로 설계하는 방법을 설명한 것이다.
+
+### 변수 유효 범위
+
+
 
 ## 상속과 다형성
 
