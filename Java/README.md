@@ -215,7 +215,7 @@ sudo apt-get purge openjdk*
 소프트웨어를 설계함에 있어 이해하기 쉽고, 유연하며, 유지보수 및 확장이 편하다는 장점이 있다.
 
 - `SRP(Single Responsibility Principle)` : 단일 책임 원칙
-- `OCP(OPen Closed Priciple)` : 개방 폐쇄 원칙
+- `OCP(Open Closed Priciple)` : 개방 폐쇄 원칙
 - `LSP(Liskov Substitution Priciple)` : 리스코프 치환 원칙
 - `ISP(Interface Sergregation Priciple)` : 인터페이스 분리 원칙
 - `DIP(Dependency Inversion Priciple)` : 의존 역전 원칙
@@ -224,31 +224,63 @@ sudo apt-get purge openjdk*
 
 > 한 클래스는 하나의 책임만 가져야 한다.
 
-여기서 하나의 책임의 기준은 '변경'을 말한다. SRP 원칙을 적용하면 다른 클래스들이 서로 영향을 미치는 연쇄작용을 줄일 수 있다. 즉, 응집도는 높이고 결합도는 낮출 수 있다.
+- 여기서 하나의 책임의 기준은 '**변경**'을 말한다. SRP 원칙을 적용하면 다른 클래스들이 서로 영향을 미치는 연쇄작용을 줄일 수 있다. 즉, 응집도는 높이고 결합도는 낮출 수 있다.
 
-책임을 적절하게 분배하면 코드의 가독성 향상, 유지보수 용이라는 이점을 가질 수 있다.
+- 책임을 적절하게 분배하면 코드의 가독성 향상, 유지보수 용이라는 이점을 가질 수 있다.
 
-예를 들어 결제 클래스가 있다면 이 클래스는 오직 결제 기능만 책임지고, 이 클래스를 수정해야 한다면 결제에 관련된 문제뿐 이어야한다.
+- 예를 들어 결제 클래스가 있다면 이 클래스는 오직 결제 기능만 책임지고, 이 클래스를 수정해야 한다면 결제에 관련된 문제뿐 이어야한다.
 
 **2. OCP(OPen Closed Priciple) : 개방 폐쇄 원칙**
 
 > 소프트웨어 요소는 확장에는 열려있으나 변경에는 닫혀 있어야 한다.
 
-기존의 코드는 변경하지 않으면서 기능을 추가할 수 있도록 설계가 되는 원칙을 말한다.
+- **기존의 코드는 변경하지 않으면서 기능을 추가할 수 있도록 설계가 되는 원칙**을 말한다.
 
-예를 들어 캐릭터 하나를 생성한다고 할 때 각 캐릭터마다 움직임이 다를 경우, 움직임 패턴 구현을 하위 클래스에 맡긴다면 캐릭터 클래스의 수정은 필요없고(Closed), 움직임 패턴만 재정의 하면 된다.(Open)
+- 예를 들어 캐릭터 하나를 생성한다고 할 때 각 캐릭터마다 움직임이 다를 경우, 움직임 패턴 구현을 하위 클래스에 맡긴다면 캐릭터 클래스의 수정은 필요없고(Closed), 움직임 패턴만 재정의 하면 된다.(Open)
 
-클래스를 설계할 때 변하는 부분과 변하지 않는 부분을 명확히 구분해야 한다. 변할 수 있는 부분은 추상화하여 상속하는 클래스가 의존할 수 있게 코드를 작성한다.
+- 클래스를 설계할 때 변하는 부분과 변하지 않는 부분을 명확히 구분해야 한다. 변할 수 있는 부분은 추상화하여 상속하는 클래스가 의존할 수 있게 코드를 작성한다.
 
-개방-폐쇄 원칙을 적용하기 위한 중요한 메커니즘은 추상화와 다형성이다.
+- 개방-폐쇄 원칙을 적용하기 위한 중요한 메커니즘은 **추상화**와 **다형성**이다.
 
 **3. LSP(Liskov Substitution Priciple) : 리스코프 치환 원칙**
 
 > 서브 타입은 언제나 자신의 기반 타입으로 변경할 수 있어야 한다.
 
+- 상위 타입을 하위 타입으로 대체하여도 문제가 없어야 한다.
+
+![LSP violation](./img/lsp_violation.jpg)
+
+리스코프 치환 원칙 위배
+
+![LSP abidance](./img/lsp_abidance.jpg)
+
+리스코프 치환 원칙 준수
+
+- 리스코프 치환 원칙은 **다형성**과 **확장성**을 극대화하며, 개방-폐쇄 원칙을 구성한다.
+
 **4. ISP(Interface Sergregation Priciple) : 인터페이스 분리 원칙**
 
+> 하나의 일반적인 인터페이스보다 여러 개의 구체적인 인터페이스가 낫다.
+
+- 인터페이스를 가능한 **최소한의 기능만 제공하면서 하나의 역할에 집중하라는 뜻**이다.
+  
+- SRP가 클래스의 단일 책임을 강조했다면 ISP는 **인터페이스의 단일책임**을 강조한다.
+
 **5. DIP(Dependency Inversion Priciple) : 의존 역전 원칙**
+
+> 구체적인 것이 추상화된 것에 의존해야 한다. 자주 변경되는 구체 클래스에 의존하지마라.
+
+- 상위 클래스, 인터페이스, 추상 클래스일수록 변하지 않을 가능성이 크다. **의존 관계를 맺을 때 거의 변화가 없는 것에 의존하라는 것**이다.
+
+![DIP violation](./img/dip_violation.jpg)
+
+의존관계 역전 원칙 위배
+
+![DIP abidance](./img/dip_abidance.jpg)
+
+의존관계 역전 원칙 준수
+
+- **의존성 주입(DI; Dependency Injection)**을 활용하면 DIP 원칙을 따르는 것이다.
 
 ***주요 용어***
 용어|설명
@@ -489,12 +521,49 @@ aaa() 출력
 
 ![vitual method table](./img/virtual_method_table.png)
 
-### 다형성
+### 다형성(Polymorphism)
 
-- 하나의 코드가 여러 자료형으로 구현되어 실행되는 것
-- 상위 클래스에서 공통 부분의 메서드를 제공하고, 하위 클래스에서는 추가 요소를 덧붙여 구현하면 양도 줄어들고 유지보수도 편리하다.
-- 필요에 따라 상속받은 모든 클래스를 하나의 상위 클래스로 처리할 수 있고 다형성에 의해 각 클래스의 여러 가지 구현을 실행할 수 있으므로 프로그램을 쉽게 확장할 수 있다.
- 
+- 하나의 코드가 여러 자료형으로 구현되어 실행되는 것이다.
+- 유지보수가 편리하고 프로그램을 쉽게 확장할 수 있다.
+
+```java
+class Animal {
+	public void move() {
+		System.out.println("동물이 움직입니다.");
+	}
+}
+
+class Tiger extends Animal {
+	public void move() {
+		System.out.println("호랑이가 네 발로 뜁니다.");
+	}
+}
+
+class Eagle extends Animal {
+	public void move() {
+		System.out.println("독수리가 하늘을 납니다.");
+	}
+}
+
+public class AnimalTest1 {
+  public static void main(String[] args) {
+    AnimalTest1 aTest = new AnimalTest1();
+    aTest.moveAnimal(new Tiger());
+    aTest.moveAnimal(new Eagle());
+  }
+
+  public void moveAnimal(Animal animal) { //매개 변수의 자료형이 상위 클래스
+    animal.move();                        //재정의 된 메서드 호출
+  }   
+}
+```
+```
+호랑이가 네 발로 뜁니다. 
+독수리가 하늘을 납니다.
+```
+
+
+
 ### 다운 캐스팅과 instanceof
 
 ## 추상 클래스
