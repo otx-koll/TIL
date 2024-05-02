@@ -587,9 +587,216 @@ if(hAnimal instanceof Human) {  // hAnimal 인스턴스 자료형이 Human형이
 
 ## 추상 클래스
 
+- 추상 메서드를 포함한 클래스
+  - cf) `concrete class`는 구현 클래스로 디자인패턴에 자주 등장하는 용어이다. new 키워드로 객체를 생성할 수 있는 클래스이다. 이때까지 만든 클래스가 `concrete class`이다.
+- 추상 메서드는 구현 코드가 없이 메서드의 선언만 존재한다.
+- `abstract` 예약어를 사용한다. `abstract`로 선언된 메서드를 가진 클래스는 `abstract`로 선언한다. 만약 모든 메서드에 구현 코드가 있지만 클래스가 `abstract`로 선언된 경우 추상 클래스가 된다.
+- new(인스턴스 화) 할 수 없다. 형 변환은 사용할 수 있다.
+- 상속을 위한 클래스
+- 추상 클래스를 상속받은 하위 클래스는 구현되지 않은 추상 메서드를 모두 구현해야 구체적인 클래스가 된다. 
+- 하위 클래스에서 구현 내용을 공유할 메서드를 구현한다. 하위 클래스에서 각각 다르게 구현해야 한다면 구현 내용은 추상 메서드로 남겨 두고, 하위 클래스에 구현을 위임
+  - 구현된 메서드 : 하위 클래스에서 공통으로 사용할 구현 코드. 하위 클래스에서 재정의(overriding)할 수 있다.
+  - 추상 메서드 : 하위 클래스가 어떤 클래스냐에 따라 구현 코드가 달라진다.
 
+### final 예약어
+
+사용위치|설명
+-|-
+변수|상수를 의미
+메서드|하위 클래스에서 재정의 불가능
+클래스|상속 불가능
+
+- 상수는 변하지 않는 수
+- 보안과 관련되어 있거나 기반 클래스가 변하면 안되는 경우에 클래스를 `final`로 선언
+- 프로젝트 구현시 여러 파일에서 공유해야 하는 상수 값은 하나의 파일에 선언하여 사용하면 편리하다.
+- 
+
+> **테스트 주도 개발(Test Driven Development; TDD)** : 테스트 코드를 먼저 개발하는 개발 방법론
+
+### 템플릿 메서드
+
+- 싱글톤 패턴과 같은 디자인 패턴
+- 메서드 실행 순서와 시나리오를 정의하는 것이다.
+- 시나리오를 정의한 메서드이므로 바뀔 수 없다. 따라서 재정의도 불가능하며 `final`예약어를 사용한다. 
+- 로직 흐름이 이미 정해져 있는 프레임워크에서 많이 사용되는 구현 방법이다.
+- 구현 내용이 달라지는 부분은 추상 메서드로, 공통으로 사용하는 메서드는 추상 클래스에 구현하여 상속받아 사용한다.
+
+<details>
+<summary><b>템플릿 메서드 응용</b></summary>
+<div markdown="1">
+
+![template method design](./img/template_method_design.png)
+
+- 추상 클래스, 추상 메서드는 이태리체로 표현
+- 각 PlayLevel별 가능한 기능이 다르므로 추상 메서드로 선언한다.
+- 기능의 순서와 반복에 대한 구현은 go(int) 메서드에 구현되어 있다.(템플릿 메서드)
+
+**MainBoard.java**
+```java
+public class MainBoard {
+	public static void main(String[] args) {
+		Player player = new Player();
+		player.play(1); // 1번 점프
+		
+		AdvancedLevel aLevel = new AdvancedLevel();
+		player.upgradeLevel(aLevel);
+		player.play(2); // 2번 점프
+		
+		SuperLevel sLevel = new SuperLevel();
+		player.upgradeLevel(sLevel);
+		player.play(3); // 3번 점프
+	}
+}
+```
+
+**Player.java**
+
+```java
+public class Player {
+	private PlayerLevel level;
+
+	public Player() {
+		level = new BeginnerLevel();
+		level.showLevelMessage();
+	}
+	
+	public PlayerLevel getLevel() {
+		return level;
+	}
+
+	public void upgradeLevel(PlayerLevel level) {
+		this.level = level;
+		level.showLevelMessage();
+	}
+	
+	public void play(int count) {
+		level.go(count);
+	}
+}
+```
+
+**PlayerLevel.java**
+
+```java
+public abstract class PlayerLevel {
+	public abstract void run();
+	public abstract void jump();
+	public abstract void turn();
+	public abstract void showLevelMessage();
+	
+	final public void go(int count) {
+		run();
+		for(int i = 0 ; i < count ; i++) {
+			jump();
+		}
+		turn();
+	}
+}
+```
+
+**BeginnerLevel.java**
+
+```java
+public class BeginnerLevel extends PlayerLevel {
+	@Override
+	public void run() {
+		System.out.println("천천히 달립니다.");
+	}
+
+	@Override
+	public void jump() {
+		System.out.println("jump 할 줄 모르지롱~");
+	}
+
+	@Override
+	public void turn() {
+		System.out.println("turn 할 줄 모르지롱~");
+	}
+
+	@Override
+	public void showLevelMessage() {
+		System.out.println("*****초보자 레벨입니다*****");
+	}
+}
+```
+
+**AdvancedLevel.java**
+
+```java
+public class AdvancedLevel extends PlayerLevel{
+	@Override
+	public void run() {
+		System.out.println("빨리 달립니다.");
+	}
+
+	@Override
+	public void jump() {
+		System.out.println("높이 jump 합니다.");
+	}
+
+	@Override
+	public void turn() {
+		System.out.println("turn 할 줄 모르지롱~");
+	}
+
+	@Override
+	public void showLevelMessage() {
+		System.out.println("*****중급자 레벨입니다*****");
+	}
+}
+```
+
+**SuperLevel.java**
+
+```java
+public class SuperLevel extends PlayerLevel {	
+	@Override
+	public void run() {
+		System.out.println("겁나게 빨리 달립니다.");
+	}
+
+	@Override
+	public void jump() {
+		System.out.println("겁나게 높이 jump 합니다.");
+	}
+
+	@Override
+	public void turn() {
+		System.out.println("한 바퀴 돕니다.");
+	}
+
+	@Override
+	public void showLevelMessage() {
+		System.out.println("*****고급 레벨입니다*****");
+	}
+}
+```
+
+**실행 결과**
+
+```
+*****초보자 레벨입니다*****
+천천히 달립니다.
+jump 할 줄 모르지롱~
+turn 할 줄 모르지롱~
+*****중급자 레벨입니다*****
+빨리 달립니다.
+높이 jump 합니다.
+높이 jump 합니다.
+turn 할 줄 모르지롱~
+*****고급 레벨입니다*****
+겁나게 빨리 달립니다.
+겁나게 높이 jump 합니다.
+겁나게 높이 jump 합니다.
+겁나게 높이 jump 합니다.
+한 바퀴 돕니다.
+```
+</div>
+</details>
 
 ## 인터페이스
+
+
 
 ## 기본 클래스
 
