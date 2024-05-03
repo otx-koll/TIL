@@ -609,7 +609,6 @@ if(hAnimal instanceof Human) {  // hAnimal 인스턴스 자료형이 Human형이
 - 상수는 변하지 않는 수
 - 보안과 관련되어 있거나 기반 클래스가 변하면 안되는 경우에 클래스를 `final`로 선언
 - 프로젝트 구현시 여러 파일에서 공유해야 하는 상수 값은 하나의 파일에 선언하여 사용하면 편리하다.
-- 
 
 > **테스트 주도 개발(Test Driven Development; TDD)** : 테스트 코드를 먼저 개발하는 개발 방법론
 
@@ -798,11 +797,336 @@ turn 할 줄 모르지롱~
 
 - 클래스 혹은 프로그램이 제공하는 기능을 명시적으로 선언하는 역할
 - 추상 메서드와 상수로만 이루어져 있다.
-- 형식적인 선언만 있고 구현은 없다.
 - 설계 목적으로 사용
-- 인터페이스에서 선언된 모든 메서드는 컴파일 과정에서 자동으로 추상 메서드로 변환
-- 인터페이스에서 선언된 모든 변수는 컴파일 과정에서 자동으로 상수로 변환
 - `implements`예약어를 사용
+- 다형성을 구현하여 확장성 있는 프로그램을 만들 수 있다.
+  - 클라이언트 프로그램을 많이 수정하지 않고, 기능을 추가하거나 다른 기능을 사용할 수 있다.
+- 구현된 클래스를 사용하는 클라이언트 코드와 기능을 제공하는 객체의 약속이다.
+- 인터페이스 형 변환
+  - 인터페이스를 구현한 클래스는 인터페이스형으로 선언한 변수로 형 변환 할 수 있다.
+  - 형 변환시 사용할 수 있는 메서드는 인터페이스에 선언된 메서드만 사용할 수 있다.
+
+> **타입상속 vs 구현상속**
+>
+> 타입 상속 : 인터페이스 implements, 부모는 선언만 하고 반드시 자식이 정의를 오버라이딩하여 사용
+>
+> 구현 상속 : 클래스 extends, 일부는 상속 받고 나머지는 구현하는 상속
+
+**Calc.java**
+```java
+public interface Calc {
+  // 인터페이스 변수는 컴파일 과정에서 상수로 변환됨
+	double PI = 3.14;
+	int ERROR = -99999999;
+	
+  // 인터페이스 메서드는 컴파일 과정에서 추상 메서드로 변환됨
+	int add(int num1, int num2);
+	int substract(int num1, int num2);
+	int times(int num1, int num2);
+	int divide(int num1, int num2);
+}
+```
+**Calculator.java**
+```java
+public abstract class Calculator implements Calc{ // 추상 클래스
+  // times()와 divide()를 구현하지 않았으므로 추상 클래스(abstract)
+	@Override
+	public int add(int num1, int num2) {
+		return num1 + num2;
+	}
+
+	@Override
+	public int substract(int num1, int num2) {
+		return num1 - num2;
+	}
+}
+```
+**CompleteCalc.java**
+```java
+public class CompleteCalc extends Calculator{
+	@Override
+	public int times(int num1, int num2) {
+		return num1 * num2;
+	}
+
+	@Override
+	public int divide(int num1, int num2) {
+		if(num2 != 0)
+			return num1 / num2;
+		return ERROR;
+	}
+
+	public void showInfo() {
+		System.out.println("Calc 인터페이스를 구현하였습니다."); // 추가로 구현한 메서드
+	}
+}
+```
+**CalculatorTest.java**
+```java
+public class CalculatorTest {
+	public static void main(String[] args) {
+		int num1 = 10;
+		int num2 = 5;
+    
+		Calc calc = new CompleteCalc(); // 가능
+		// Calc calc1 = new Calc(); 인터페이스는 인스턴스화 될 수 없다.
+		// Calc calc2 = new Calculator(); 추상클래스이므로 인스턴스화 될 수 없다.
+		CompleteCalc calc3 = new CompleteCalc(); // 가능
+		Calculator calc4 = new CompleteCalc(); // 가능
+		
+		System.out.println(calc.add(num1, num2));
+	}
+}
+```
+**실행 결과**
+```
+15
+```
+
+### 인터페이스 요소
+
+- 상수 : 모든 변수는 상수로 변환된다.
+  - `public static final`을 적을 필요가 없다. 
+- 추상 메서드 : 모든 메서드는 추상메서드로 구현된다.
+
+***자바8부터 가능한 메서드***
+
+- 디폴트 메서드 : 인터페이스에서 구현 코드까지 작성한 메서드
+  - `default` 예약어를 사용한다.
+  - 일반 메서드와 똑같이 구현하되, 메서드 자료형 앞에 `default`만 써주면 된다.
+  - 인터페이스에 이미 구현되어 있으므로 인터페이스를 구현한 추상클래스나, 추상클래스를 상속받은 클래스에서 코드를 구현할 필요가 없다.
+  - 하위 클래스에서 재정의 가능
+- 정적 메서드 : 인스턴스 생성과 상관없이 사용할 수 있는 메서드
+  - `static`예약어를 사용한다.
+  - 사용할 때는 인터페이스 이름으로 직접 참조하여 사용
+- 디폴트 메서드나 정적 메서드를 추가했다해도 여전히 인터페이스는 인스턴스를 생성할 수 없다.
+- private 메서드 : 내부에서만 기능을 제공하기 위해 구현하는 메서드이다. 하위 클래스에서 오버라이딩이 불가능하다.
+  - `private` 혹은 `private static`으로 선언. `private static`은 정적 메서드에서 사용 할 수 있다.
+
+```java
+public interface Calc {
+	...
+	// default 메서드
+	default void description() {
+		System.out.println("정수 계산기를 구현합니다.");
+		myMethod(); // 디폴트 메서드에서 private 메서드 호출
+	}
+	
+	// static 메서드
+	static int total(int[] arr) {
+		int total = 0;
+		for(int i : arr) {
+			total += i;
+		}
+		myStaticMethod(); // 정적 메서드에서 private static 메서드 호출
+		return total;
+	}
+	
+	// private 메서드
+	private void myMethod() {
+		System.out.println("private 메서드입니다.");
+	}
+	
+	// private static 메서드
+	private static void myStaticMethod() {
+		System.out.println("private static 메서드입니다.");
+	}
+}
+```
+
+### 인터페이스 활용
+
+***한 클래스가 여러 인터페이스를 구현하는 경우***
+- 구현코드가 없기 때문에 여러 인터페이스를 구현 할 수 있다.(extends 뒤에는 한개만 가능, implements 뒤에는 여러개 가능)
+
+***두 인터페이스의 디폴트 메서드가 중복되는 경우***
+- default 메서드 이름이 똑같으면 오류가 발생한다. 두 인터페이스를 구현하는 하위 클래스에서 재정의하면 하위 클래스를 생성하여 사용할 때 재정의된 메서드가 호출된다. 
+
+**Buy.java**
+```java
+public interface Buy {
+	void buy();
+	default void order() {
+		System.out.println("구매주문");
+	}
+}
+```
+**Sell.java**
+```java
+public interface Sell {
+	void sell();
+	default void order() {
+		System.out.println("판매주문");
+	}
+}
+```
+**Customer.java**
+```java
+public class Customer implements Buy, Sell{
+	@Override
+	public void sell() {
+		System.out.println("판매하기");
+	}
+
+	@Override
+	public void buy() {
+		System.out.println("구매하기");
+	}
+    
+	
+	@Override
+	public void order() {
+		System.out.println("고객 판매 주문");
+	}
+}
+```
+**CustomerTest.java**
+```java
+public class CustomerTest {
+	public static void main(String[] args) {
+		Customer customer = new Customer();
+		
+		Buy buyer = customer;
+		buyer.buy();
+		
+		Sell seller = customer;
+		seller.sell();
+		
+		customer.order();
+    // customer를 Buy형으로 변환하고, buyer.order()하면 Buy의 default가 아닌 Customer에서 재정의한 메서드가 호출
+		buyer.order(); 
+		seller.order();
+	}
+}
+```
+**실행 결과**
+```
+구매하기
+판매하기
+고객 판매 주문
+고객 판매 주문
+고객 판매 주문
+```
+
+***인터페이스 상속***
+- 인터페이스 간에도 상속이 가능
+- 구현코드의 상속이 아니므로 형 상속(type inheritance)라고 함
+
+**X.java**
+```java
+public interface X {
+	void x();
+}
+```
+**Y.java**
+```java
+public interface Y {
+	void y();
+}
+```
+**MyInterface.java**
+```java
+public interface MyInterface extends X, Y{	
+	void myMethod();
+}
+```
+**MyClass.java**
+```java
+public class MyClass implements MyInterface{
+	// 구현해야 하는 메서드 총 3개
+	@Override
+	public void x() {
+		System.out.println("x()");
+	}
+
+	@Override
+	public void y() {
+		System.out.println("y()");
+	}
+
+	@Override
+	public void myMethod() {
+		System.out.println("myMethod()");
+	}
+	
+	public static void main(String[] args) {
+		MyClass myClass = new MyClass();
+		
+		X xClass = myClass;
+		xClass.x();
+	}
+}
+```
+**실행 결과**
+```
+x()
+```
+
+***인터페이스 구현과 클래스 상속 함께 쓰기***
+- 클래스 다음 상속
+- 프레임워크나 기존 소스 코드를 사용해 개발하는 경우가 많다.
+
+**Queue.java**
+```java
+public interface Queue {
+	void enQueue(String title); // 배열의 맨 마지막에 추가
+	String deQueue(); // 배열의 맨 처음 항목 반환
+}
+```
+**Shelf.java**
+```java
+public class Shelf {
+	protected ArrayList<String> shelf;
+	
+	public Shelf() { // 디폴트 생성자로 Shelf 클래스를 생성하면 ArrayList 생성
+		shelf = new ArrayList<String>();
+	}
+	
+	public ArrayList<String> getShelf(){
+		return shelf;
+	}
+}
+```
+**BookShelf.java**
+```java
+public class BookShelf extends Shelf implements Queue{
+	@Override
+	public void enQueue(String title) {
+		shelf.add(title);
+	}
+
+	@Override
+	public String deQueue() {
+		return shelf.remove(0); // 맨 처음 요소 삭제하고 반환
+	}
+}
+```
+**BookShelfTest.java**
+```java
+public class BookShelfTest {
+	public static void main(String[] args) {
+		Queue shelfQueue = new BookShelf();
+		shelfQueue.enQueue("태백산맥1");
+		shelfQueue.enQueue("태백산맥2");
+		
+		System.out.println(shelfQueue.deQueue());
+		System.out.println(shelfQueue.deQueue());
+	}
+}
+```
+**실행 결과**
+```
+태백산맥1
+태백산맥2
+```
+
+> **JDBC와 인터페이스**
+> 
+> JDBC는 Java DataBase Connectivity의 약자로 자바와 데이터베이스를 연결해 주는 역할이다. JDBC의 여러 기능들 중 하나가 Connection을 생성하고 연결하는 것이다. Connection은 자바와 DB를 연결하기 위해 사용하는 인터페이스이다.
+>
+> DB회사에서 자신의 회사에 맞게 구현한 클래스 파일 묶음인 .jar 라이브러리를 제공받고 로딩하여 Connection 인터페이스에 선언된 메서드를 사용하면 된다.
+>
+> JDBC는 자바에서 DB를 어떻게 사용할 것인지를 기술한 약속이라고 할 수 있다.
 
 ## 기본 클래스
 
