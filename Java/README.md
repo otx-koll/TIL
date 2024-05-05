@@ -1142,33 +1142,140 @@ JavaDoc에서 찾아서 활용하면 된다. 자주 사용하는 클래스만 �
 
 ***Object 클래스 메서드***
 
-- toString()
+메서드|설명
+-|-
+`String toString()`|객체를 문자열로 표현하여 반환한다. 재정의하여 객체에 대한 설명이나 특정 멤버 변수 값을 반환한다.
+`boolean equals(Object obj)`|두 인스턴스가 동일한지 여부를 반환한다. 재정의하여 논리적으로 동일한 인스턴스임을 정의할 수 있다.
+`int hashCode()`|객체의 해시 코드 값을 반환한다.
+`Object clone()`|객체를 복제하여 동일한 멤버 변수 값을 가진 새로운 인스턴스를 생성한다.
+`Class getClass()`|객체의 Class 클래스를 반환한다. (final로 선언됨)
+`void finalize()`|인스턴스가 힙 메모리에서 제거될 때 가비지 컬렉터(GC)에 의해 호출되는 메서드이다. 네트워크 연결 해제, 열려 있는 파일 스트링 해제 등을 구현한다. (final로 선언됨)
+`void wait()`|멀티스레드 프로그램에서 사용하는 메서드이다. 스레드를 '기다리는 상태(non runnable)로 만든다. (final로 선언됨)
+`void notify()`|`wait()`메서드에 의해 기다리고 있는 스레드(non runnable 상태)를 실행 가능한 상태(runnable)로 가져옵니다. (final로 선언됨)
+
+- `toString()`
   - 원형 : `getClass().getName() + '@' + Integer.toHexString(hashCode())`
     - 클래스이름@해시코드값
   - 객체를 문자열로 표현하여 반환한다.
   - 직접 재정의하여 객체의 참조 변수를 이용해 원하는 문자열로 표현할 수 있다.
-- equals()
+- `equals()`
   - 두 인스턴스의 주소를 비교하는 것
   - 두 인스턴스가 있을 때 `==`는 단순히 물리적으로 같은 메모리 주소인지 여부를 확인하는 것
-  - `equals()`는 재정의를 하여 논리적으로 같은 인스턴스인지(메모리 주소가 다르더라도 같은건지) 확인하도록 구현할 수 있다.
-  
-
+  - `equals()`는 재정의를 하여 논리적으로 같은 인스턴스인지(메모리 주소가 다르더라도) 확인하도록 구현할 수 있다.
+- `hashCode()`
+  - hash : 정보를 저장하거나 검색할 때 사용하는 자료 구조
+  - 자료의 특정 값(키 값)에 대해 저장 위치를 반환해주는 해시 함수를 사용한다.
+  - `index = hash(key)` : 저장위치 = 해시함수(객체정보)
+  - `hashCode()`는 인스턴스의 저장 주소를 10진수로 반환한다.
+  - 힙 메모리에 인스턴스가 저장되는 방식이 hash
+  - 두 인스턴스가 같다면 해시 코드 값도 같아야 한다.
+    - `equals()`를 재정의했다면 `hashCode()`도 재정의 해야한다.
+- `clone()`
+  - 객체의 원본을 유지해놓고 복사본을 사용할 때
+  - 기본 틀(prototype)의 복사본을 사용해 동일한 인스턴스를 만들어 복잡한 생성 과정을 간단히 하려는 경우
+  - `clone()`을 사용하면 객체의 정보(멤버변수 값)가 같은 인스턴스가 또 생성되는 것이므로 객체 지향 프로그램의 정보 은닉, 객체 보호의 관점에서 위배될 수 있다.
+  - 객체의 `clone()` 사용을 허용한다는 의미로 cloneable 인터페이스를 명시해 준다. `implements Clonealbe`을 작성하지 않으면 `CloneNotSupportedException`오류 발생
 
 ### String 클래스
 
+자바에서 문자열을 사용할 수 있게 제공한 클래스이다. 
 
+***String을 선언하는 방법***
+
+- 힙 메모리에 인스턴스로 생성되는 경우
+- 상수 풀에 있는 주소를 참조
+  - 상수 풀(constant pool) : 프로그램에서 사용되는 상수 값
+  - 상수 풀의 문자열을 참조하면 모든 문자열이 같은 주소를 가리킨다.
+
+```java
+String str1 = new String("abc"); // 생성자의 매개변수로 문자열 생성
+String str1 = "test"; // 문자열 상수를 가리키는 방식
+```
+
+![constant_pool](./img/constant_pool.png)
+
+***문자열 연결***
+
+- 자바는 String 클래스를 제공하여 편리하게 문자열을 사용할 수 있다. value변수에 저장되는데 이 변수는 final로 선언되어 있다.
+- "문자열은 불변(immutable)한다".
+- 따라서 두 개의 문자열을 연결하게 되면 새로운 인스턴스가 생성된다.
+- 문자열 연결을 계속하게 되면 메모리가 많이 낭비될 수 있으므로 보통은 `StringBuffer`와 `StringBuilder`클래스를 사용한다.
+
+***StringBuilder, StringBuffer 클래스 활용***
+
+- 내부에 변경 가능한 char[]를 변수로 가지고 있다.
+- 새로 생성하지 않고 기존 배열을 변경하므로 garbage가 생기지 않는다.
+- 문자열을 여러 번 연결하거나 변경할 때 사용하면 유용하다.
+- `StringBuffer`는 멀티스레드 프로그래밍에서 동기화(sybchronization)을 보장
+- `StringBuilder`는 동기화를 지원하지 않는다. 단일 스레드 프로그램에서 권장
+- `toString()` 메서드로 String 클래스로 다시 반환 가능
 
 ### Wrapper 클래스
 
+- 기본 자료형(primitive data type)에 대한 클래스
 
+기본형|Wrapper 클래스
+-|-
+boolean|Boolean
+byte|Byte
+char|Character
+short|Short
+int|Integer
+long|Long
+float|Float
+double|Double
+
+***오토 박싱(autoboxing)과 언박싱(unboxing)***
+
+- Integer은 클래스, int는 기본 자료형 4바이트
+- 두 개의 자료를 같이 연산할 때 자동으로 변환이 일어난다.
+- 자바 5 이전엔 Integer와 int를 더할 수 없었지만 이후부턴 자동으로 컴파일러가 해준다.
+- 오토 박싱 : 기본형 -> 객체형
+- 언박싱 : 객체형 -> 기본형
 
 ### Class 클래스
 
+- 자바의 모든 클래스와 인터페이스는 컴파일 후 class 파일로 생성된다.
+- class 파일에는 객체의 정보(멤버변수, 메서드, 생성자 등)가 포함되어 있다.
+- Class 클래스는 class 파일에서 객체의 정보를 가져온다.
 
+***Class 클래스 사용***
+
+1. Object 클래스의 getClass() 메서드 사용
+```java
+String s = new String();
+Class c= s.getClass(); // getClas() 메서드의 반환형은 Class
+```
+
+2. 클래스 파일 이름을 Class 변수에 직접 대입
+```java
+Class c = String.Class;
+```
+
+3. Class.forName("클래스 이름")메서드 사용
+```java
+Class c = Class.forName("java.lang.String");
+```
+
+- 1, 2번 방법의 경우 해당 클래스가 컴파일되어 있어야 사용 가능(statc로딩)
+- 3번 방법은 해당 이름을 가진 클래스가 있으면 메모리에 로딩(동적로딩)
+
+***Class 클래스로 정보 가져오기***
+
+- `리플렉션(reflection)` : 사용하려는 클래스의 자료형을 모른다면 Class 클래스를 활용하여 그 클래스의 정보를 가져오고, 활용하여 인스턴스를 생성하거나 메서드를 호출하는 방식
+- Constructor, Method, Filed 등의 클래스는 java.lang.reflect 패키지에 정의되어 있다.
+- 컴파일 시점에 알 수 없는 클래스, 즉 프로그램 실행 중 클래스를 메모리에 로딩하거나 객체가 다른 곳에 위치해서 원격으로 로딩하고 생성할 때 사용한다.
+
+***Class.forName() 메서드로 동적 로딩***
+
+- `동적 로딩` : 컴파일시에 데이터 타입이 모두 binding되어 자료형이 로딩되는 것(static loading)이 아니라 실행중에 데이터 타입을 아고 binding되는 방식
+- 어떤 클래스를 사용할지 모를 때 변수로 처리하고 실행될 때 해당 변수에 대입된 값의 클래스가 실행될 수 있도록 Class 클래스에서 제공하는 static 메서드이다.
+- 프로그램 실행 이후 클래스의 로딩이 필요한 경우에 사용한다.
+- 프로그램 실행 후 메서드가 호출될 때 클래스 이름에 해당하는 클래스가 없다면 `ClassNotFoundException`이 발생할 수 있다.
 
 ## 컬렉션 프레임워크
 
-
+2
 
 ## 내부 클래스, 람다식, 스트림
 
