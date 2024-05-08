@@ -1275,7 +1275,93 @@ Class c = Class.forName("java.lang.String");
 
 ## 컬렉션 프레임워크
 
-2
+### 제네릭(Generic)
+
+- 여러 자료형이 대체될 수 있도록 프로그래밍하는 방식이다. 참조자료형에서만 사용
+- 변수의 선언이나 메서드 매개변수를 하나의 참조 자료형이 아닌 여러 자료형을 변환될 수 있도록 프로그래밍하는 방식
+- 참조 자료형의 변환은 컴파일러가 자료형을 확인해 주기 때문에 안정적이면서 형 변환 코드가 줄어든다.
+- 컬렉션 프레임워크에서 많이 사용되고 있다.
+
+***제네릭 클래스***
+- 여러 참조 자료형으로 대체될 수 있는 부분을 하나의 문자로 표현
+- 이 문자는 자료형 매개변수
+
+**ThreeDPrinter.java**
+```java
+public class ThreeDPrinter<T> {
+	private T material;
+	public T getMaterial() {
+		return material;
+	}
+	public void setMaterial(T material) {
+		this.material = material;
+	}	
+}
+```
+**ThreeDPrinterTest.java**
+```java
+public class ThreeDPrinterTest {
+	public static void main(String[] args) {
+		ThreeDPrinter<Powder> printer = new ThreeDPrinter<Powder>();
+		printer.setMaterial(new Powder());
+		Powder powder = printer.getMaterial(); // 명시적 형 변환 필요X
+	}
+}
+```
+
+***자료형 매개변수 T***
+- type의 의미로 T를 많이 사용한다. (element의미로 E, value의미로 V로도 사용함)
+- \<T>에서 <>는 다이아몬드 연산자
+- T의 자료형이 정해지는 순간은 제네릭 클래스의 인스턴스가 생성되는 순간이다. 따라서 static 키워드는 T에 사용할 수 없다.
+- 다이아몬드 연산자 내부에서 자료형 생략 가능
+```java
+ArrayList<String>list = new ArrayList<>();
+```
+- 제네릭에서 자료형 추론 (자바10부터)
+```java
+ArrayList<String> list = new ArrayList<String>();
+↓
+var list = new ArrayList<String>();
+```
+
+***제네릭 클래스 사용 예제***
+
+- T로 정의한 부분에 사용할 참조 자료형을 넣어서 클래스 생성한다. getMaterial()메서드가 호출될 때 강제 형변환을 하지 않아도 된다.
+
+용어|설명
+-|-
+GenericPrinter<Powder>|제네릭 자료형(Generic type), 매개변수화된 자료형(parameterized type)
+Powder|대입된 자료형
+
+- **\<T extends 클래스>**
+  - T가 사용될 클래스를 제한하기 위해 사용
+  - Material에서 상속받지 않은 Water와 같은 클래스는 프린터 재료로 사용할 수 없음
+  - Material에 정의된 메서드를 공유할 수 있음
+
+**ThreeDPrinter.java**
+```java
+public class ThreeDPrinter<T extends Material> {
+	private T material;
+
+	public T getMaterial() {
+		return material;
+	}
+
+	public void setMaterial(T material) {
+		this.material = material;
+	}
+
+	@Override
+	public String toString() {
+		return material.toString();
+	}
+	
+	public void printing() {
+		material.doPrinting();
+	}
+}
+```
+
 
 ## 내부 클래스, 람다식, 스트림
 
