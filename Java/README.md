@@ -1362,6 +1362,9 @@ public class ThreeDPrinter<T extends Material> {
 }
 ```
 
+### 컬렉션 프레임워크
+
+[컬렉션 프레임워크](/Java/Java-Collection-Framework.md)
 
 ## 내부 클래스, 람다식, 스트림
 
