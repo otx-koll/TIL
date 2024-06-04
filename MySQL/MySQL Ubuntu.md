@@ -82,6 +82,12 @@ sudo systemctl status mysql    # MySQL 서버 상태 확인
 ```bash
 sudo mysql -u root -p
 ```
+> **mysql -u root -p**에서
+> 
+> **-u**는 뒤에 \[username]을 붙여서 로그인 할 유저명을 입력한다는 뜻 (--user)
+>
+> **-p**는 서버에 로그인 시 패스워드를 사용하겠다는 의미이다. (--password)
+
 ```bash
 $ sudo mysql -u root -p
 Enter password:
@@ -149,3 +155,9 @@ mysql 재시작
 ```bash
 sudo service mysql restart
 ```
+
+## See also
+
+https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-22-04
+
+https://dev.mysql.com/doc/
