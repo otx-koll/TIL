@@ -1375,11 +1375,32 @@ public class ThreeDPrinter<T extends Material> {
 - 클래스 내부에 선언한 클래스
 - 다른 클래스와 협력할 일 없을 때 사용
 - 선언 위치나 예약어에 따라 네 가지 유형으로 나뉨
-  - 인스턴스 내부 클래스
-  - 정적(static) 내부 클래스
-  - 지역(local) 내부 클래스
-  - 익명(anonymous) 내부 클래스
 
+```java
+class ABC {					// 외부 클래스
+	class In {				// 인스턴스 내부 클래스
+		static class Sln {	// 정적 내부 클래스
+		}
+	}
+	public void abc() { 
+		class Local{ 		// 지역 내부 클래스
+		}
+	}
+}
+```
+
+1. 인스턴스 내부 클래스
+
+- 인스턴스 변수를 선언할 때와 같은 위치에 선언
+- 외부 클래스 내부에서만 생성하여 사용하는 객체를 선언할 때 쓴다. 
+
+2. 정적(static) 내부 클래스
+
+
+3. 지역(local) 내부 클래스
+
+
+4. 익명(anonymous) 내부 클래스
 
 
 ### 람다식
